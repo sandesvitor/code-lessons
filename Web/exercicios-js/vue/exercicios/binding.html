@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Binding</title>
+    <link rel="stylesheet" href="/css/estilo.css">
+    <script src="/js/vue.min.js"></script>
+</head>
+<body class="exercicio">
+
+    <div id="app">
+        <p>{{ link }}</p>
+        <p><a href="{{ link }}">Canal?</a></p>
+        <p><a v-bind:href="link">Canal</a></p>
+        <!-- v-bind é uma diretiva do Vue -->
+        <p><a :href="link"></a>Canal</p>
+        <!-- forma reduzida de fazer um bind -->
+        <p>
+            <!-- v-model atualiza o "data" -->
+            <input type="text" v-model="nome"><br>
+            <span>{{ nome }}</span><br>
+
+            <input type="text" :value="cargo"><br>
+            <span>{{ cargo }}</span>
+        </p>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                link: "https://youtube.com/cod3rcursos",
+                nome: "Maria",
+                cargo: 'Programadora'
+            },
+            watch: {
+                nome(novoValor){
+                    console.log(novoValor.toUpperCase())
+                }
+            }
+        })
+    </script>
+</body>
+</html>

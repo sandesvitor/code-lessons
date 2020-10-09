@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercícios HTML</title>
+    <style>
+        #conteudo{
+            padding: 30px 0px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Exercícios HTML</h1>
+    </header>
+    <nav>
+        <a href="exercicios/teste.html">00 - Teste</a> |
+        <a href="exercicios/texto1.html">01 - Texto 1</a> |
+        <a href="exercicios/texto2.html">02 - Texto 2</a> |
+        <a href="exercicios/listas.html">03 - Listas</a> |
+        <a href="exercicios/listaAninhada.html">04 - Lista Aninhada</a> |
+        <a href="exercicios/links.html">05 - Links</a> |
+        <a href="exercicios/tabela.html">06 - Tabelas</a> |
+        <a href="exercicios/form/form.html">07 - Formulário</a> |
+        <a href="exercicios/images.html">08 - Images</a> |
+        <a href="exercicios/video.html">09 - Video</a> |
+        <a href="exercicios/tagsNaoVisuais.html">10 - Tags Não Visuais</a>
+    </nav>
+    <section id="conteudo"></section>   
+    <footer>
+        Curso de Web Moderno
+    </footer>
+    <script>
+        document.querySelectorAll('a').forEach(link => { 
+            const conteudo = document.getElementById('conteudo')
+
+            link.onclick = function(e){
+                e.preventDefault()          
+                fetch(link.href) // requisição AJAX
+                    .then(resp => resp.text()) // "text" pega o conteúdo html da "resp"
+                    .then(html => conteudo.innerHTML = html)
+            }
+        })
+
+        /*
+        RESUMINDO O SCRIPT: associamos a cada um dos link "a" uma função que será disparada
+        no "onclik". A função aplicada ao parâmetro "e", "e.preventDefault()" previne o comportamento
+        padrão do link "a" que é navegar.
+
+        Como temosacesso ao conteúdo "conteudo". pelo document.getElementById('conteudo'),
+        fazemos um "fetch", requisição Ajax, em cima do atributo "href", a resposta dessa Promise
+        nós pegamos com o primeiro "then()", depois pegamos a resposta da segunda promise com o 
+        segundo "then()", e com essa resposta mudamos o HTML da Tag "section" utilizando o atributo
+        innerHtml
+        */ 
+    </script>
+</body>
+</html>

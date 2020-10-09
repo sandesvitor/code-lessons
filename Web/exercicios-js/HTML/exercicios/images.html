@@ -1,0 +1,100 @@
+<div wm-slider>
+
+    <p>
+        <img src="http://files.cod3r.com.br/curso-web/imagem1.jpg" 
+            alt="Muro da Cidade"
+            width="513" height="342"
+            title="Muro da Cidade por Tarso Bessa">
+    </p>
+    
+    <p>
+        <img src="http://files.cod3r.com.br/curso-web/imagem2.gif"
+            alt="intro Cod3r" height="342">
+    </p>
+    
+    <p class="circular">
+        <img src="http://files.cod3r.com.br/curso-web/imagem3.png"
+            alt="Rio de Janeiro" height="342">
+    </p>
+
+    <p class="texto">
+        <img src="http://files.cod3r.com.br/curso-web/avatar.jpg" 
+            alt="Avatar" height="50" align="left">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Modi aperiam id repudiandae quod! Nulla molestiae excepturi, 
+        suscipit, facilis deleniti culpa tempora quae nesciunt voluptates 
+        fuga, unde adipisci voluptatibus tenetur necessitatibus.
+    </p>
+
+    <p class="cidade"></p>
+
+    <p>
+        <picture>
+            <source srcset="http://files.cod3r.com.br/curso-web/logo-larga.png"
+                media="(min-width: 600px)">
+                <img src="http://files.cod3r.com.br/curso-web/logo-estreita.png" alt="Logo"> 
+        </picture>
+    </p>
+
+</div>
+
+
+<style>
+
+    p {
+        position: absolute;
+        display: none;
+    }
+    
+    .circular {
+        width: 513px;
+        background-color: #444;
+    }
+
+    .texto {
+        width: 400px;
+    }
+    .texto img {
+        margin: 0px 12px 2px 0px;
+    }
+    .cidade {
+        width: 513px;
+        height: 342px;
+        background-image: url("http://files.cod3r.com.br/curso-web/imagem4.jpg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 200%;
+    }
+</style>
+
+<script>
+
+    const elementos = document.querySelectorAll('[wm-slider] > p')
+    const slides = Array.from(elementos)
+
+    let i = 0
+    let x = 0
+         
+    
+    function loop(){
+        slides[i].style.display = "block"
+        
+        if (x > 2000){
+            x = 0
+            slides[i].style.display = "none"
+            i += 1
+            
+            if (i > (slides.length - 1)) {
+                i = 0
+            }
+        }
+        
+        slides[i].style.left = `${x}px`
+        x += 5
+
+        setTimeout(loop, 7) 
+    }
+
+    loop()
+
+</script>
