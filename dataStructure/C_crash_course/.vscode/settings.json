@@ -1,6 +1,0 @@
-{
-    "files.associations": {
-        ".sequelizerc": "javascript",
-        "functional": "c"
-    }
-}
