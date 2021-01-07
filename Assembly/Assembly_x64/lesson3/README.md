@@ -88,25 +88,25 @@ Finnaly, the **64bit version** of **EAX** is called **RAX**, and its lowest 32bi
 In conclusion, in an x64 CPU there are a total of 16 registers, with basically the same abilities as RAX. Each can be accessed as a 64bit, 32bit, 16bit or as a byte (8bit). 
 Collectivly they are called **GENERAL PURPOSE REGISTERS** (or **GPR**). Many of them have specific roles wich they usually do but at any point, a programmer is able to use any of the GPR for general arithmetic.
 
-64 Bits | Low 32 Bits | Low 16 Bits | Low 8 Bits | Notes |
---- | --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |---
-RAX | EAX | AX | AH/AL | Accumulator |
-RBX | EBX | BX | BH/BL | Base |
-RCX | ECX | CX | CH/CL | Counter |
-RDX | EDX | DX | DH/DL | Data |
-RSP | ESX | SP | SPL | Stack Pointer |
-RBP | EBX | BP | BPL | Base Pointer |
-RSI | ESI | SI | SIL | Source Index |
-RDI | EDI | DI | DIL | Destination Index |
-R7 | R7D | R7W | R7B | Only on 64bit |
-R8 | R8D | R8W | R8B | Only on 64bit |
-R9 | R9D | R9W | R9B | Only on 64bit |
-R10 | R10D | R10W | R10B | Only on 64bit |
-R11 | R11D | R11W | R11B | Only on 64bit |
-R12 | R12D | R12W | R12B | Only on 64bit |
-R13 | R13D | R13W | R13B | Only on 64bit |
-R14 | R14D | R14W | R14B | Only on 64bit |
-R15 | R15D | R15W | R15B | Only on 64bit |
+|   64 Bits   | Low 32 Bits | Low 16 Bits | Low 8 Bits  |    Notes    |
+| ----------- | ----------- | ----------- | ----------- | ----------- |
+| RAX         | EAX         | AX          | AH/AL       | Accumulator |
+| RBX         | EBX         | BX          | BH/BL       | Base        |
+| RCX         | ECX         | CX          | CH/CL       | Counter     |
+| RDX         | EDX         | DX          | DH/DL       | Data        |
+| RSP         | ESX         | SP          | SPL         | Stack Pointer |
+| RBP         | EBX         | BP          | BPL         | Base Pointer |
+| RSI         | ESI         | SI          | SIL         | Source Index |
+| RDI         | EDI         | DI          | DIL         | Destination Index |
+| R7          | R7D         | R7W         | R7B         | Only on 64bit |
+| R8          | R8D         | R8W         | R8B         | Only on 64bit |
+| R9          | R9D         | R9W         | R9B         | Only on 64bit |
+| R10         | R10D        | R10W        | R10B        | Only on 64bit |
+| R11         | R11D        | R11W        | R11B        | Only on 64bit |
+| R12         | R12D        | R12W        | R12B        | Only on 64bit |
+| R13         | R13D        | R13W        | R13B        | Only on 64bit |
+| R14         | R14D        | R14W        | R14B        | Only on 64bit |
+| R15         | R15D        | R15W        | R15B        | Only on 64bit |
 
 ---
 
@@ -129,10 +129,12 @@ There are any number of CPU registers for debugging, counting clock ticks and me
 ---
 
 ### **Basic Instructions**:
-Mneumonic | Meaning | Intel | AT&T |
---- | --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |---
-MOV | Move/Copy data | mov eax, 24 | movl $24, %eax |
-ADD | Addition | add rcx, 16 | addq $16, %rcx |
-SUB | Subtraction | sub di, es | subw %es, %di |
-INC | Increment | inc rcx | inc %rcx |
-DEC | Decrement | dec bh | dec %bh |
+| Mneumonic      |   Meaning      |      Intel     |     AT&T       |
+| -------------- | -------------- | -------------- | -------------- |
+| MOV            | Move/Copy data | mov eax, 24    | movl $24, %eax |
+| ADD            | Addition       | add rcx, 16    | addq $16, %rcx |
+| SUB            | Subtraction    | sub di, es     | subw %es, %di  |
+| INC            | Increment      | inc rcx        | inc %rcx       |
+| DEC            | Decrement      | dec bh         | dec %bh        |
+
+
