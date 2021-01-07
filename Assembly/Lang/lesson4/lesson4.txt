@@ -1,0 +1,79 @@
+MATH OPERATIONS:
+
+    Math operations are used to mathematically manipulate registers.
+    The form of math operation is typically:
+
+        "operation register, value/register"
+
+    EX:
+        add rax,5
+        sub rbx, rax
+
+ASCII:
+
+    ASCII is the method which modern computers represent strings
+    of text. Computers can only store numbers, so ASCII works by 
+    mapping numbers to specific characters (letters, numbers, symbols,
+    etc).
+    
+    ASCII uses 7-bit binary codes to represent characters. However,
+    as the byte, whice is 8-bit, is the primary unit of information,
+    modern computers usually support extended ASCII, whice is 8-bit 
+    codes.
+
+    It is useful to reference as ASCII table.
+    (http://www.asciitable.com/)
+
+DISPLAY DIGIT:
+
+    The value in the rax register is incremented by 48. If we check
+    the ASCII chart, 48 is the value of the "0" character, 48+1 is
+    the value of the "1" character, etc.
+
+STACK:
+
+    The stack, like registers, is another way to temporarily store data.
+    It is called the "stack" because you *stack* data onto it.
+
+    Imagine a stack of papers. As you stack one paper on top of another,
+    you can only at a given time see the contents of the paper at the top
+    of the stack.
+
+    A page whitin the middle of the stack cannoto be removed without
+    removing all the pages on top of it first, as the pages on top of it
+    hold it in place.
+
+TERMINOLOGY:
+
+    When you add data onto the top of the stack, you PUSH data onto the
+    stack.
+
+    When you remove data from the top of the stack, you POP data from the
+    stack.
+
+    If you look at the top of the stack without removing or adding anything
+    to it, this is called PEEKING.
+
+
+
+    --------------------------------------------
+         Operation        |      Effect
+    --------------------------------------------
+         push reg/value   |  Pushes a value 
+                          |   onto the stack.
+    --------------------------------------------
+                          | Pops a value off of 
+          pop reg         | the stack and store
+                          | it in register (reg)
+    --------------------------------------------
+        mov reg, [rsp]    | Store the peek value
+                          |     in reg
+    --------------------------------------------
+
+    Note: Usually in places where you can use registers, you can also
+    uses pointers. Such as, instead of "pop reg", you can use "pop [labe]"
+    to pop a value off stack directly into a position in memory.
+
+
+
+

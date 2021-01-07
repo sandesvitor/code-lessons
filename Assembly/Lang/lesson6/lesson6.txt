@@ -1,0 +1,75 @@
+#### MACROS ####
+
+INTRO:
+
+A macro is a single instruction that expands into a predefined set of instructions
+to perform a particular task.
+
+-----  ----------> mov rax, 60
+exit | ----------> mov rdi, 0 (standart input)
+-----  ----------> syscall
+
+In this case, the "exit" macro is automatticly expanded into those 3 pre-defined 
+set of instructions to perform the task of exiting.
+
+Other example will be to print some string on the screen:
+
+       ----------> mov rax, 1
+-----  ----------> mov rdi, 1 (standart output)
+print| ----------> rsi, str.Hello_World
+-----  ----------> mov rdx, 12
+       ----------> syscall 
+
+
+DEFINING MACROS:
+
+<name>
+	Name of macro.
+<argc>
+	The number of arguments the
+	macro will take.
+<macro_body>
+	The definition of the macro
+
+
+%name exit, 0
+	mov rax, 0
+	mov rdi, 0
+	syscall
+%endmacro
+
+
+- argc ---> whithin the macro body, these inputs are references using "%1" for
+	    the first, "%2" for second and so forth.
+
+
+%macro printDigit 1
+	mov rax, %1
+	call _printRAXDigit
+%endmacro
+
+_start:
+	printDigit 3
+	printDigit 4
+	
+	; exit syscall
+	mov rax, 0
+	mov rdi, 0
+	syscall
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
