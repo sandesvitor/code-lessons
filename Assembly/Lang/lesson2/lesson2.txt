@@ -1,0 +1,173 @@
+############################################
+####### JUMPS, CALLS, COMPARIOSON ##########
+############################################
+
+FLAGS:
+
+    Flags, like Registers, hold data.
+    Flags only hold 1 bit each. They are either True of False.
+    Individual flags are part of a larger register.
+
+    For instance: CF (carry); PF (parity); ZF (zero); OF (overflow)...
+
+POINTERS:
+
+    Pointers are also registers that hold data.
+    They "point to" data, meaning, they hold its memory address.
+
+    For instance: rip (eip, ip) => index pointer: Points to next address
+                                   to be executed in the control flow.
+
+CONTROL FLOW:
+
+    All code runs from top to bottom by default. The direction a program
+    flows is called *control flow*.
+    The rip register holds the address of the next instruction to be 
+    executed. After each instruction, it is incremented by 1, making the
+    control flow naturally flow from top to bottom.
+
+    EX: hello.asm
+
+    section .data
+        text db "Hello World!",10
+
+    section .text
+        global _start
+
+    _start:
+        mov rax, 1    ;rip = x
+        mov rdi, 1    ;rip = x + 1
+        mov rsi, text ;rip = x + 2
+        mov rdx, 14   ;rip = x + 3
+        syscall       ;rip = x + 4
+
+        mov rax, 60   ;rip = x + 5
+        mov rdi, 0    ;rip = x + 7
+        syscall:w
+
+JUMPS
+
+    Jumps can be used to jump to different parts of code based on labels.
+    They are used to divert program flow.
+
+    The general format of the jump is:
+    "jmp label" ===> Loads the value "label" into the rip register
+
+    EX (Infinit Loop):
+    _start:
+        jmp _start
+    
+COMPARISONS:
+
+    Comparisons allow programs to be able to take different paths based
+    on certain conditions.
+    Comparisons are done on registers.
+    
+    The general format of a comparison is...
+    "cmp register, register/value"
+
+    EX:
+        cmp rax,23
+        cmp rax, rbx
+
+Comparisons with Flags >>>
+
+    After we make a comparison, flags are set!
+
+    ________________
+        cmp a,b
+    ----------------
+    a  = b |  ZF = 1
+    a != b |  ZF = 0
+    ...
+    ________________
+
+
+CONDITIONAL JUMP:
+
+    After a comparison is made, a conditional jump can be made.
+    Conditional jumps are based on the status of the flag.
+    Conditional jumps in code are written just like unconditional jumps,
+    however "jmp" is replaced bu the symbol for the conditional jump.
+
+    EX:
+        cmp a,b
+        je  = jump if equal             (a = b)
+        jne = jump if not equal         (a !=b)
+        jz  = jump if equal to zero     (a = 0)
+        jnz = jump if not equal to zero (a !=0)
+        jg  = jump if greater than      (a > b)
+        jo  = jump if overflows occors       
+        ...
+
+     Code EX_1:
+
+        cmp rax,23
+        je _doThis
+
+        This code will jump to the address of label "_doThis" if
+        and only if the value in the rax register is equal to 23.
+
+     Code EX_2:
+
+        cmp rax, rbx
+        jg _doThis
+    
+        This code will jump to the address of label "_doThis" if
+        and only if the value in the rax register is greater than
+        the value in the rbx register.
+
+REGISTER AS POINTERS:
+
+    The default register can be treated as pointers.
+
+    To treat a register as a pointer, surround the register name with
+    square brackets, such as, "rax" becomes "[rax]".
+
+    EX:
+
+    mov rax, rbx   ==> Loads the value of rbx register into
+                       the rax register.
+
+    mov rax, [rbx] ==> Loads the value the rbx register is pointing
+                       to into the rax register.
+
+CALLS:
+
+    Calls and jumps are essentrially the same.
+    However, when "call" is used, the original position the call
+    was made can be returned to using "ret"
+
+    ### hello_modified.asm ###
+    
+     section .data
+        text db "Hello, world!", 10
+    
+     section .text
+        global _start
+
+    _start: 
+
+        call _printHello
+
+        mov rax, 60
+        mov rdi, 0
+        syscall
+
+    _printHello:
+        mov rax, 1
+        mov rdi, 1
+        mov rsi, text
+        mov rdx, 14
+        syscall
+        ret
+
+    ########################
+
+    In this modification of the "Hello, World!" code, the part of code
+    that prints "Hello, World!" was moves into its own section, and that
+    section was called.
+
+    This is called "subroutine".
+
+    
