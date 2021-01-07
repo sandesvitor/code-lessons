@@ -1,0 +1,13 @@
+### USEFULL COMMANDS ###
+
+"aaa" - analize all (analize the binary);
+"afl" - analize function list (after analizing the binary show all functions); 
+"pdf" - print desassemble function;
+"s <function/memory address>" - seek memory adress;
+":" - enter editing mode, like VIM;
+"axt" - analize cross-reference;
+"u" - go back;
+"q" - quit;
+"p" - change view;
+"V" - view mode;
+"VV" - graph mode
