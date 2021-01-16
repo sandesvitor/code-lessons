@@ -13,7 +13,7 @@ In x64, the first 6 integer variables are passed in registers, this include **bo
 | ----------- | ----------- |
 | 1           | RDI         |
 | 2           | RSI         |
-| 3           | RDI         |
+| 3           | RDX         |
 | 4           | RCX         |
 | 5           | R8*         |
 | 6           | R9*         |
