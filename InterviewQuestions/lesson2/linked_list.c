@@ -7,6 +7,7 @@ typedef struct Node{
 }Node;
 
 
+// O(n)
 void push(Node* head, int data){
     Node* new_node = (Node*)malloc(sizeof(Node));
     new_node->data = data;
@@ -17,6 +18,7 @@ void push(Node* head, int data){
     head->next = new_node;
 }
 
+// O(n)
 void print_list(Node* head){
     while(head != NULL){
         printf("%d(%p)->", head->data, (void*)(head));
@@ -25,8 +27,10 @@ void print_list(Node* head){
     printf("\n");
 }
 
+// O(2n) ==> O(n)
 void reverse_list(Node* head);
 
+// O(2n) ==> O(n)
 void delete_nth_node(Node* head, int n){
     Node* tmp = head;
     Node* prev = NULL;
@@ -47,6 +51,7 @@ void delete_nth_node(Node* head, int n){
     free(tmp);
 }
 
+// O(2n) ==> O(n)
 void delete_middle_node(Node* head){
     Node* tmp = head;
     Node* fast_pointer = head;
@@ -68,6 +73,23 @@ void delete_middle_node(Node* head){
     fast_pointer = NULL;    
     free(fast_pointer);
 }
+
+// O(n)
+void remove_duplicate_data(Node* head){
+    Node* tmp = NULL;
+    Node* prev = NULL;
+    while(head->next != NULL){
+        prev = head;
+        tmp = head->next;
+        if( ( (head->data) - ((head->next)->data) ) == 0 ){
+            prev->next = tmp->next;
+            tmp->next = NULL;
+        } else {
+            head = head->next;
+        }
+    }
+}
+
 
 int main(){
     
@@ -96,6 +118,25 @@ int main(){
     printf("\nTEST 4:\n");
     delete_middle_node(HEAD);
     print_list(HEAD);
+
+
+
+    // New list:
+    Node* NEW_HEAD = (Node*)malloc(sizeof(Node));
+    NEW_HEAD->data = 2;
+    NEW_HEAD->next = NULL;
+    push(NEW_HEAD, 3);
+    push(NEW_HEAD, 3);
+    // push(NEW_HEAD, 3);
+    push(NEW_HEAD, 5);
+    printf("\nNew List:\n");
+    print_list(NEW_HEAD);
+
+    printf("\nTEST 5:\n");
+    remove_duplicate_data(NEW_HEAD);
+    print_list(NEW_HEAD);
+        
+
 
     return 0;
 }
