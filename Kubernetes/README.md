@@ -265,3 +265,188 @@ apiserver: Running
 kubeconfig: Configured
 timeToStop: Nonexistent
 ```
+
+In the example bellow, we use **kubectl get service**, **kubectl get deployment**, **kubectl get pod**  and **kubectl get replicaset** to analyse and run K8s components:
+---
+
+```
+┌─[sandesvitor@pop-os] - [~/Study/code-lessons/Kubernetes] - [1246]
+└─[$] kubectl get services                                                         [14:46:44]
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   6m15s
+┌─[sandesvitor@pop-os] - [~/Study/code-lessons/Kubernetes] - [1247]
+└─[$] kubectl create deployment nginx-depl --image=nginx                           [14:46:48]
+deployment.apps/nginx-depl created
+┌─[sandesvitor@pop-os] - [~/Study/code-lessons/Kubernetes] - [1248]
+└─[$] kubectl get deployment                                                       [14:48:21]
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-depl   0/1     1            0           13s
+┌─[sandesvitor@pop-os] - [~/Study/code-lessons/Kubernetes] - [1249]
+└─[$] kubectl get pod                                                              [14:48:34]
+NAME                          READY   STATUS    RESTARTS   AGE
+nginx-depl-5c8bf76b5b-5975t   1/1     Running   0          24s
+┌─[sandesvitor@pop-os] - [~/Study/code-lessons/Kubernetes] - [1250]
+└─[$] kubectl get pod                                                              [14:48:45]
+NAME                          READY   STATUS    RESTARTS   AGE
+nginx-depl-5c8bf76b5b-5975t   1/1     Running   0          45s
+┌─[sandesvitor@pop-os] - [~/Study/code-lessons/Kubernetes] - [1250]
+└─[$] kubectl get replicaset                                                       [14:49:06]
+NAME                    DESIRED   CURRENT   READY   AGE
+nginx-depl-5c8bf76b5b   1         1         1       87s
+┌─[sandesvitor@pop-os] - [~/Study/code-lessons/Kubernetes] - [1251]
+└─[$] kubectl get pod                                                              [14:49:48]
+NAME                          READY   STATUS    RESTARTS   AGE
+nginx-depl-5c8bf76b5b-5975t   1/1     Running   0          111s
+
+```
+
+---
+
+## **Kubernetes Configuration File:**
+
+Every configuration file in K8s have 3 parts:
+
+### 0. The header of the file, where we declare what we want to create:
+
+```yml
+apiVersion: apps/v1
+kind: Deployment # could also be a service, for instance
+```
+
+### 1. Metadata of the Component that we're creating:
+
+```yaml
+metadata:
+    name: nginx-deployment
+    labels: ...
+```
+
+### 2. Specification:
+
+The attributes will be specific to the kind of component we are building. For instance a **service** will have **port** attribute.
+
+```yaml
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: nginx
+    template:
+        metadata:
+            labels:
+                app: nginx
+        spec:
+            containers:
+            - name: nginx
+              image: nginx:1.16
+              ports:
+              - containerPort: 8080 
+```
+
+### 3. Status:
+
+It is automatically set by K8s, in a *self-healling* method. It will adhere the status of you deployment and update the status continuosly.
+
+```yaml
+status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-01-24T10:54:59Z"
+      lastUpdateTime: "2020-01-24T10:54:59Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2020-01-24T10:54:56Z"
+      lastUpdateTime: "2020-01-24T10:54:59Z"
+      message: ReplicaSet "nginx-deployment-7d64f4b"
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+```
+
+In the example above, we can see that the **status section** doesn't match the desire **specification section** (the former and the latter only have 1 replica). Therefore, K8s will compare the **status** with the **spec** and confirms that there is a problem, and other replica need to be created ASAP!
+
+### So, where does K8s get this status data?
+
+If we remember correctly, K8s will get this information from the **etcd**, one of the **Master Nodes Processes**, the **CLuster Brain**. Etcd holds, at any time, the current status of any K8s component!
+
+### **Format of the Configuration File**:
+
+It uses the **yaml** extension.
+
+A **yaml** file have a couple of properties:
+- "human friendly data serialization standard for all programming languages"
+- syntax: strict indentation! (tip: we should use a ONLINE YAML VALIDATOR to validate our file!)
+- store the config file with your code! (Infrastructure as a Code service)
+
+### Layers of Abstraction:
+- Deployment manages Pods;
+- Pods are abstractions of containers;
+
+As we can see, the **template** part of the **spec** has its own configuration (own *metadata* and *spec*):
+
+```yaml
+    template:
+        metadata:
+            labels:
+                app: nginx
+        spec:
+            containers:
+            - name: nginx
+              image: nginx:1.16
+              ports:
+              - containerPort: 8080 
+```
+
+This happens because the template configuration applys to a Pod, so Pod should have its own config inside of a Deployment.
+
+This is the **blue print**.
+
+### **Connecting components (Labels & Selectors & Ports)**:
+
+Analyzing the yaml file we can see that **metadata** contains the **labels** and the **spec** contains the **selector**.
+
+In the **metadata** we give the component (in this case the **deployment**) a key/value pair the it'll stick to it. 
+
+```yaml
+            labels:
+                app: nginx
+```
+
+In the **spec** section, we give Pods created by the tamplate blueprint the label (key/value pair) "app: nginx". And we tell the **deployment** to match all the labels "app: nginx" to create that connection, so this way **deployment** will know wich Pods bellongs to it.
+
+```yaml
+    selector:
+        matchLabels:
+            app: nginx
+```
+
+Now, the **deployment** has its own label, "app: nginx", and this labels are used, for instance, by a **service** selector to connect between the service and deployment and its Pods, because the service must know wich Pods are registers to it:
+
+```yml
+apiVersion: v1
+kind: Service
+metadata:
+    name: nginx-service
+spec:
+    selector:
+        app: nginx
+    ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 8080
+```
+
+### **Ports**:
+
+```yaml
+    ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 8080
+```
