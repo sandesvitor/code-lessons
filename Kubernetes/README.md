@@ -442,7 +442,7 @@ spec:
           targetPort: 8080
 ```
 
-### **Ports**:
+### **Ports in Service and Pod**:
 
 ```yaml
     ports:
@@ -450,3 +450,59 @@ spec:
           port: 80
           targetPort: 8080
 ```
+
+For instance, a **Service** have a port that is where the service itself is accessible at. So, a *DB Service* should send a request to an *nginx Service* in port 80, and the nginx Service should have a **targetPort** that indicates for each Pod this request should be forward, for instance port 8080 (wich will be the containerPort in the container spec!).
+
+```yaml
+    template:
+        metadata:
+            labels:
+                app: nginx
+        spec:
+            containers:
+            - name: nginx
+              image: nginx:1.16
+              ports:
+              - containerPort: 8080 
+```
+
+Now, we can create the **deployment** and **service** using the command **kubectl apply <file_path>**
+
+```shell
+┌─[sandesvitor@pop-os] - [~/Study/code-lessons/Kubernetes] - [1453]
+└─[$] kubectl apply -f nginx-deployment.yaml                                         [12:31:18]
+deployment.apps/nginx-deployment created
+┌─[sandesvitor@pop-os] - [~/Study/code-lessons/Kubernetes] - [1454]
+└─[$] kubectl apply -f nginx-service.yaml                                            [12:31:24]
+service/nginx-service created
+┌─[sandesvitor@pop-os] - [~/Study/code-lessons/Kubernetes] - [1455]
+└─[$]     
+```
+
+For deleting the pods, we use the command **kubectl delete <file_path>**:
+```shell
+┌─[sandesvitor@pop-os] - [~/Study/code-lessons/Kubernetes] - [1461]
+└─[$] kubectl delete -f nginx-deployment.yaml                                        [12:35:15]
+deployment.apps "nginx-deployment" deleted
+┌─[sandesvitor@pop-os] - [~/Study/code-lessons/Kubernetes] - [1462]
+└─[$] kubectl delete -f nginx-service.yaml                                           [12:37:02]
+service "nginx-service" deleted
+```
+
+---
+
+## **Complete Application Setup with Kubernetes Components:**
+
+## Overview of K8s Components:
+
+- MongoDB Pod;
+- Mongo-Express Pod;
+
+## Browser Request Flow through the K8s component:
+
+Browser Request => Mongo-Express (External Service) => Mongo Express Pod => (...)
+
+(...) => Connect to MongDB internal service => forward to MongoDB!
+
+
+
